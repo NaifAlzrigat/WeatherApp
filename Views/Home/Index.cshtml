@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="text-center">
+    <label for="cityName" >Enter City Name :</label>
+    <input id="cityName" type="text" />
+    <button id="Getbtn" class="btn-info"> Get weather info </button>
+</div>
+    <br />
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-sm-12 col-xs-12">
+            <div class="card text-white">
+                <div class="div1 p-4 p-md-5 ">
+                    <h5 id="contry"></h5>
+                    <h3 id="temp"><sup>°F </sup> </h3>
+                    <p id="feel" class="my-0"></p>
+                    <h4 id="weather" class="my-0"></h4>
+                </div>
+                <div class="div2"> </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var city;
+    var result;
+    $("#cityName").keyup(function () {
+        city = $(this).val();
+    });
+    $(document).ready(function () {
+        $('#Getbtn').click(function () {
+            if (city == "") {
+                return alert("Plz. Enter country");
+            } else {
+                $.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=c12e81c0116820c36f0258aeb295a9f6`, function (res) {
+                    result = res;
+                }).done(function () {
+                    console.log(result)
+                    $("#contry").text(result.name)
+                    $("#temp").text(result.main.temp)
+                    $("#feel").text(result.main.feels_like)
+                    $("#weather").text(result.weather[0].description)
+                }).fail(function () {
+                    alert("Not Found")
+                })
+            }
+        })
+    })
+</script>
+
